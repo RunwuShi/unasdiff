@@ -1,0 +1,2258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Unsupervised Single-Channel Audio Separation with Diffusion Source Priors</title>
+   
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Source+Serif+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📑</text></svg>">
+    <link rel="stylesheet" href="style.css"> 
+
+    <style>
+    </style>
+</head>
+
+<body>
+    <button class="dark-mode-toggle" id="darkModeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+     
+    <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+     
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title"></h2>
+            <button class="close-sidebar" id="closeSidebar">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <a href="#top" class="sidebar-button active">
+                    <i class="fas fa-home"></i>Home
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#D0" class="sidebar-button">
+                    </i>1 Speech+1 Sound Separation
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#D1" class="sidebar-button">
+                    </i>1 Speech+2 Sound Separation
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#D2" class="sidebar-button">
+                    </i>2 Sound Separation
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#D3" class="sidebar-button">
+                    </i>3 Sound Separation
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#D4" class="sidebar-button">
+                    </i>2 Speech Separation
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="#D5" class="sidebar-button">
+                    </i>Comparision Results
+                </a>
+            </li>
+
+        </ul>
+         
+        <div class="sidebar-footer">
+            <!-- <p>AAAI 2026</p> -->
+        </div>
+    </div>
+     
+    <div class="content-area">
+        <section id="top">
+            <div class="hero-body">
+                <div class="container has-text-centered">
+                    <h1 class="title is-3">Unsupervised Single-Channel Audio Separation <br> with Diffusion Source Priors</h1>
+                    <h2 class="subtitle is-5">Anonymous Authors · Under Submission</h2>
+                </div>
+            </div>
+        </section>
+         
+        <section class="section" id="abstract">
+            <div class="content has-text-justified">
+                <strong>Abstract:</strong> Single-channel audio separation, which isolates individual sources such as speech and sound events from monophonic mixtures, remains a challenging task in audio processing. Supervised approaches, typically trained on synthetically generated mixtures, are the prevailing solution. However, these methods depend on high-quality paired training data, which is often scarce or difficult to acquire in real-world scenarios. This data scarcity can hinder model performance on unseen mixing conditions, compromising generalization capabilities.
+                To this end, in this work, we approach the problem from an unsupervised perspective, framing it as a probabilistic inverse problem. Our method requires only training diffusion priors on individual sources. Separation is then achieved by iteratively guiding an initial state towards the solution through reconstruction loss. Crucially, we introduce an advanced inverse solver specifically designed for separation, which mitigates gradient conflicts arising from the interference between the diffusion prior and the reconstruction guidance during the denoising process. This effectively ensures high-quality and balanced separation performance across individual sources. In addition, we found that using augmented mixture instead of pure Gaussian noise to initialize the denoising process is effective, and this informative prior significantly improves the final performance. Furthermore, to enhance audio prior modeling, we designed a novel Time-Frequency (TF) attention-based network architecture that demonstrates powerful audio modeling capabilities. These collective improvements significantly enhance separation performance, as demonstrated by our experimental results across speech-sound event, sound event, and speech separation tasks.
+            </div>
+        </section>
+        
+        <div class="line-above"> </div>
+
+        
+        <section class="section" id="D0">
+            <h2 class="title is-3 section-title">Task 1: 1 Speech + 1 Sound Event Separation</h2>
+            <h3 class="subtitle is-4">Audio Example 1</h3> 
+                <div class="content">
+                    <div class="audio-results-header">
+                        <h4 class="audio-header-label">Mixture</h4>
+                        <h4 class="audio-header-label">Separation Results</h4>
+                        <h4 class="audio-header-label">Ground Truth</h4>
+                    </div>
+        
+                    <div class="audio-results-grid">
+                        <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/01/mix.png" alt="Mixture Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/01/mix.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/01/sepa_0.png" alt="Separation Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/01/sepa_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/01/real_0.png" alt="Ground Truth Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/01/real_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item empty-cell"> </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/01/sepa_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/01/sepa_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/01/real_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/01/real_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>  
+                    </div>          
+                </div>        
+                  
+            <div class="audio-group-separator"></div> 
+
+            <h3 class="subtitle is-4">Audio Example 2</h3> 
+            <div class="content">
+                    <div class="audio-results-header">
+                        <h4 class="audio-header-label">Mixture</h4>
+                        <h4 class="audio-header-label">Separation Results</h4>
+                        <h4 class="audio-header-label">Ground Truth</h4>
+                    </div>
+        
+                    <div class="audio-results-grid">
+                        <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/02/mix.png" alt="Mixture Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/02/mix.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/02/sepa_0.png" alt="Separation Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/02/sepa_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/02/real_0.png" alt="Ground Truth Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/02/real_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item empty-cell"> </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/02/sepa_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/02/sepa_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/02/real_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/02/real_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>        
+                    </div> 
+            </div> 
+
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Audio Example 3</h3> 
+            <div class="content">
+                    <div class="audio-results-header">
+                        <h4 class="audio-header-label">Mixture</h4>
+                        <h4 class="audio-header-label">Separation Results</h4>
+                        <h4 class="audio-header-label">Ground Truth</h4>
+                    </div>
+        
+                    <div class="audio-results-grid">
+                        <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/03/mix.png" alt="Mixture Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/03/mix.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/03/sepa_0.png" alt="Separation Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/03/sepa_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/03/real_0.png" alt="Ground Truth Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/03/real_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item empty-cell"> </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/03/sepa_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/03/sepa_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/03/real_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/03/real_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>        
+                    </div> 
+            </div> 
+
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Audio Example 4</h3> 
+            <div class="content">
+                    <div class="audio-results-header">
+                        <h4 class="audio-header-label">Mixture</h4>
+                        <h4 class="audio-header-label">Separation Results</h4>
+                        <h4 class="audio-header-label">Ground Truth</h4>
+                    </div>
+        
+                    <div class="audio-results-grid">
+                        <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/04/mix.png" alt="Mixture Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/04/mix.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/04/sepa_0.png" alt="Separation Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/04/sepa_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/04/real_0.png" alt="Ground Truth Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/04/real_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item empty-cell"> </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/04/sepa_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/04/sepa_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/04/real_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/04/real_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>        
+                    </div> 
+            </div> 
+
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Audio Example 5</h3> 
+            <div class="content">
+                    <div class="audio-results-header">
+                        <h4 class="audio-header-label">Mixture</h4>
+                        <h4 class="audio-header-label">Separation Results</h4>
+                        <h4 class="audio-header-label">Ground Truth</h4>
+                    </div>
+        
+                    <div class="audio-results-grid">
+                        <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/05/mix.png" alt="Mixture Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/05/mix.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/05/sepa_0.png" alt="Separation Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/05/sepa_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/05/real_0.png" alt="Ground Truth Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/05/real_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item empty-cell"> </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/05/sepa_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/05/sepa_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/01_1speech_1sound/05/real_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/01_1speech_1sound/05/real_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>        
+                    </div> 
+            </div> 
+        </section>
+
+
+        <section class="section" id="D1">
+            <h2 class="title is-3 section-title">Task 1: 1 Speech + 2 Sound Event Separation</h2>
+            <h3 class="subtitle is-4">Audio Example 1</h3> 
+                <div class="content">
+                    <div class="audio-results-header">
+                        <h4 class="audio-header-label">Mixture</h4>
+                        <h4 class="audio-header-label">Separation Results</h4>
+                        <h4 class="audio-header-label">Ground Truth</h4>
+                    </div>
+        
+                    <div class="audio-results-grid">
+                        <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                <img src="audios/02_1speech_2sound/01/mix.png" alt="Mixture Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/02_1speech_2sound/01/mix.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/02_1speech_2sound/01/sepa_0.png" alt="Separation Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/02_1speech_2sound/01/sepa_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/02_1speech_2sound/01/real_0.png" alt="Ground Truth Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/02_1speech_2sound/01/real_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item empty-cell"> </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/02_1speech_2sound/01/sepa_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/02_1speech_2sound/01/sepa_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/02_1speech_2sound/01/real_1.png" alt="Separation Waveform 3">
+                            </div>
+                            <audio controls>
+                                <source src="audios/02_1speech_2sound/01/real_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>  
+
+                        <div class="audio-result-item empty-cell"> </div>
+                        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/02_1speech_2sound/01/sepa_2.png" alt="Separation Waveform 3">
+                            </div>
+                            <audio controls>
+                                <source src="audios/02_1speech_2sound/01/sepa_2.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/02_1speech_2sound/01/real_2.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/02_1speech_2sound/01/real_2.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>  
+
+
+                    </div>          
+                </div>        
+
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Audio Example 2</h3> 
+                <div class="content">
+                    <div class="audio-results-header">
+                        <h4 class="audio-header-label">Mixture</h4>
+                        <h4 class="audio-header-label">Separation Results</h4>
+                        <h4 class="audio-header-label">Ground Truth</h4>
+                    </div>
+        
+                    <div class="audio-results-grid">
+                        <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                <img src="audios/02_1speech_2sound/02/mix.png" alt="Mixture Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/02_1speech_2sound/02/mix.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/02_1speech_2sound/02/sepa_0.png" alt="Separation Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/02_1speech_2sound/02/sepa_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/02_1speech_2sound/02/real_0.png" alt="Ground Truth Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/02_1speech_2sound/02/real_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item empty-cell"> </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/02_1speech_2sound/02/sepa_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/02_1speech_2sound/02/sepa_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/02_1speech_2sound/02/real_1.png" alt="Separation Waveform 3">
+                            </div>
+                            <audio controls>
+                                <source src="audios/02_1speech_2sound/02/real_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>  
+
+                        <div class="audio-result-item empty-cell"> </div>
+                        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/02_1speech_2sound/02/sepa_2.png" alt="Separation Waveform 3">
+                            </div>
+                            <audio controls>
+                                <source src="audios/02_1speech_2sound/02/sepa_2.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/02_1speech_2sound/02/real_2.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/02_1speech_2sound/02/real_2.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>  
+
+
+                    </div>          
+                </div>      
+
+                <div class="audio-group-separator"></div> 
+                <h3 class="subtitle is-4">Audio Example 3</h3> 
+                    <div class="content">
+                        <div class="audio-results-header">
+                            <h4 class="audio-header-label">Mixture</h4>
+                            <h4 class="audio-header-label">Separation Results</h4>
+                            <h4 class="audio-header-label">Ground Truth</h4>
+                        </div>
+            
+                        <div class="audio-results-grid">
+                            <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                    <img src="audios/02_1speech_2sound/03/mix.png" alt="Mixture Waveform 1">
+                                </div>
+                                <audio controls>
+                                    <source src="audios/02_1speech_2sound/03/mix.wav" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+            
+                            <div class="audio-result-item">
+                                <div class="waveform-placeholder">
+                                    <img src="audios/02_1speech_2sound/03/sepa_0.png" alt="Separation Waveform 1">
+                                </div>
+                                <audio controls>
+                                    <source src="audios/02_1speech_2sound/03/sepa_0.wav" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+            
+                            <div class="audio-result-item">
+                                <div class="waveform-placeholder">
+                                    <img src="audios/02_1speech_2sound/03/real_0.png" alt="Ground Truth Waveform 1">
+                                </div>
+                                <audio controls>
+                                    <source src="audios/02_1speech_2sound/03/real_0.wav" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+            
+                            <div class="audio-result-item empty-cell"> </div>
+            
+                            <div class="audio-result-item">
+                                <div class="waveform-placeholder">
+                                    <img src="audios/02_1speech_2sound/03/sepa_1.png" alt="Separation Waveform 2">
+                                </div>
+                                <audio controls>
+                                    <source src="audios/02_1speech_2sound/03/sepa_1.wav" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+            
+                            <div class="audio-result-item">
+                                <div class="waveform-placeholder">
+                                    <img src="audios/02_1speech_2sound/03/real_1.png" alt="Separation Waveform 3">
+                                </div>
+                                <audio controls>
+                                    <source src="audios/02_1speech_2sound/03/real_1.wav" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>  
+    
+                            <div class="audio-result-item empty-cell"> </div>
+                            
+                            <div class="audio-result-item">
+                                <div class="waveform-placeholder">
+                                    <img src="audios/02_1speech_2sound/03/sepa_2.png" alt="Separation Waveform 3">
+                                </div>
+                                <audio controls>
+                                    <source src="audios/02_1speech_2sound/03/sepa_2.wav" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+            
+                            <div class="audio-result-item">
+                                <div class="waveform-placeholder">
+                                    <img src="audios/02_1speech_2sound/03/real_2.png" alt="Separation Waveform 2">
+                                </div>
+                                <audio controls>
+                                    <source src="audios/02_1speech_2sound/03/real_2.wav" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>  
+    
+    
+                        </div>          
+                    </div>      
+
+                    <div class="audio-group-separator"></div> 
+                    <h3 class="subtitle is-4">Audio Example 4</h3> 
+                        <div class="content">
+                            <div class="audio-results-header">
+                                <h4 class="audio-header-label">Mixture</h4>
+                                <h4 class="audio-header-label">Separation Results</h4>
+                                <h4 class="audio-header-label">Ground Truth</h4>
+                            </div>
+                
+                            <div class="audio-results-grid">
+                                <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                        <img src="audios/02_1speech_2sound/04/mix.png" alt="Mixture Waveform 1">
+                                    </div>
+                                    <audio controls>
+                                        <source src="audios/02_1speech_2sound/04/mix.wav" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                
+                                <div class="audio-result-item">
+                                    <div class="waveform-placeholder">
+                                        <img src="audios/02_1speech_2sound/04/sepa_0.png" alt="Separation Waveform 1">
+                                    </div>
+                                    <audio controls>
+                                        <source src="audios/02_1speech_2sound/04/sepa_0.wav" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                
+                                <div class="audio-result-item">
+                                    <div class="waveform-placeholder">
+                                        <img src="audios/02_1speech_2sound/04/real_0.png" alt="Ground Truth Waveform 1">
+                                    </div>
+                                    <audio controls>
+                                        <source src="audios/02_1speech_2sound/04/real_0.wav" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                
+                                <div class="audio-result-item empty-cell"> </div>
+                
+                                <div class="audio-result-item">
+                                    <div class="waveform-placeholder">
+                                        <img src="audios/02_1speech_2sound/04/sepa_1.png" alt="Separation Waveform 2">
+                                    </div>
+                                    <audio controls>
+                                        <source src="audios/02_1speech_2sound/04/sepa_1.wav" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                
+                                <div class="audio-result-item">
+                                    <div class="waveform-placeholder">
+                                        <img src="audios/02_1speech_2sound/04/real_1.png" alt="Separation Waveform 3">
+                                    </div>
+                                    <audio controls>
+                                        <source src="audios/02_1speech_2sound/04/real_1.wav" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>  
+        
+                                <div class="audio-result-item empty-cell"> </div>
+                                
+                                <div class="audio-result-item">
+                                    <div class="waveform-placeholder">
+                                        <img src="audios/02_1speech_2sound/04/sepa_2.png" alt="Separation Waveform 3">
+                                    </div>
+                                    <audio controls>
+                                        <source src="audios/02_1speech_2sound/04/sepa_2.wav" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                
+                                <div class="audio-result-item">
+                                    <div class="waveform-placeholder">
+                                        <img src="audios/02_1speech_2sound/04/real_2.png" alt="Separation Waveform 2">
+                                    </div>
+                                    <audio controls>
+                                        <source src="audios/02_1speech_2sound/04/real_2.wav" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>  
+        
+        
+                            </div>          
+                        </div>    
+
+
+                        <div class="audio-group-separator"></div> 
+                        <h3 class="subtitle is-4">Audio Example 5</h3> 
+                            <div class="content">
+                                <div class="audio-results-header">
+                                    <h4 class="audio-header-label">Mixture</h4>
+                                    <h4 class="audio-header-label">Separation Results</h4>
+                                    <h4 class="audio-header-label">Ground Truth</h4>
+                                </div>
+                    
+                                <div class="audio-results-grid">
+                                    <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                            <img src="audios/02_1speech_2sound/05/mix.png" alt="Mixture Waveform 1">
+                                        </div>
+                                        <audio controls>
+                                            <source src="audios/02_1speech_2sound/05/mix.wav" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                    
+                                    <div class="audio-result-item">
+                                        <div class="waveform-placeholder">
+                                            <img src="audios/02_1speech_2sound/05/sepa_0.png" alt="Separation Waveform 1">
+                                        </div>
+                                        <audio controls>
+                                            <source src="audios/02_1speech_2sound/05/sepa_0.wav" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                    
+                                    <div class="audio-result-item">
+                                        <div class="waveform-placeholder">
+                                            <img src="audios/02_1speech_2sound/05/real_0.png" alt="Ground Truth Waveform 1">
+                                        </div>
+                                        <audio controls>
+                                            <source src="audios/02_1speech_2sound/05/real_0.wav" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                    
+                                    <div class="audio-result-item empty-cell"> </div>
+                    
+                                    <div class="audio-result-item">
+                                        <div class="waveform-placeholder">
+                                            <img src="audios/02_1speech_2sound/05/sepa_1.png" alt="Separation Waveform 2">
+                                        </div>
+                                        <audio controls>
+                                            <source src="audios/02_1speech_2sound/05/sepa_1.wav" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                    
+                                    <div class="audio-result-item">
+                                        <div class="waveform-placeholder">
+                                            <img src="audios/02_1speech_2sound/05/real_1.png" alt="Separation Waveform 3">
+                                        </div>
+                                        <audio controls>
+                                            <source src="audios/02_1speech_2sound/05/real_1.wav" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>  
+            
+                                    <div class="audio-result-item empty-cell"> </div>
+                                    
+                                    <div class="audio-result-item">
+                                        <div class="waveform-placeholder">
+                                            <img src="audios/02_1speech_2sound/05/sepa_2.png" alt="Separation Waveform 3">
+                                        </div>
+                                        <audio controls>
+                                            <source src="audios/02_1speech_2sound/05/sepa_2.wav" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                    
+                                    <div class="audio-result-item">
+                                        <div class="waveform-placeholder">
+                                            <img src="audios/02_1speech_2sound/05/real_2.png" alt="Separation Waveform 2">
+                                        </div>
+                                        <audio controls>
+                                            <source src="audios/02_1speech_2sound/05/real_2.wav" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>  
+            
+            
+                                </div>          
+                            </div>    
+     
+        </section>
+
+
+        <section class="section" id="D2">
+            <h2 class="title is-3 section-title">Task 2: 2 Sound Event Separation</h2>
+           
+            <h3 class="subtitle is-4">Audio Example 1</h3> 
+                <div class="content">
+                    <div class="audio-results-header">
+                        <h4 class="audio-header-label">Mixture</h4>
+                        <h4 class="audio-header-label">Separation Results</h4>
+                        <h4 class="audio-header-label">Ground Truth</h4>
+                    </div>
+        
+                    <div class="audio-results-grid">
+                        <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                <img src="audios/03_2sound/01/mix.png" alt="Mixture Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/03_2sound/01/mix.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/03_2sound/01/sepa_0.png" alt="Separation Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/03_2sound/01/sepa_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/03_2sound/01/real_0.png" alt="Ground Truth Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/03_2sound/01/real_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item empty-cell"> </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/03_2sound/01/sepa_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/03_2sound/01/sepa_1.wav" type="audio/mpeg">
+                                Your browser do not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/03_2sound/01/real_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/03_2sound/01/real_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>  
+                    </div>          
+                </div>        
+                  
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Audio Example 2</h3> 
+            <div class="content">
+                <div class="audio-results-header">
+                    <h4 class="audio-header-label">Mixture</h4>
+                    <h4 class="audio-header-label">Separation Results</h4>
+                    <h4 class="audio-header-label">Ground Truth</h4>
+                </div>
+    
+                <div class="audio-results-grid">
+                    <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/02/mix.png" alt="Mixture Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/02/mix.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/02/sepa_0.png" alt="Separation Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/02/sepa_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/02/real_0.png" alt="Ground Truth Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/02/real_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item empty-cell"> </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/02/sepa_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/02/sepa_1.wav" type="audio/mpeg">
+                            Your browser do not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/02/real_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/02/real_1.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>  
+                </div>          
+            </div>      
+
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Audio Example 3</h3> 
+            <div class="content">
+                <div class="audio-results-header">
+                    <h4 class="audio-header-label">Mixture</h4>
+                    <h4 class="audio-header-label">Separation Results</h4>
+                    <h4 class="audio-header-label">Ground Truth</h4>
+                </div>
+    
+                <div class="audio-results-grid">
+                    <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/03/mix.png" alt="Mixture Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/03/mix.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/03/sepa_0.png" alt="Separation Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/03/sepa_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/03/real_0.png" alt="Ground Truth Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/03/real_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item empty-cell"> </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/03/sepa_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/03/sepa_1.wav" type="audio/mpeg">
+                            Your browser do not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/03/real_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/03/real_1.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>  
+                </div>          
+            </div>      
+
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Audio Example 4</h3> 
+            <div class="content">
+                <div class="audio-results-header">
+                    <h4 class="audio-header-label">Mixture</h4>
+                    <h4 class="audio-header-label">Separation Results</h4>
+                    <h4 class="audio-header-label">Ground Truth</h4>
+                </div>
+    
+                <div class="audio-results-grid">
+                    <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/04/mix.png" alt="Mixture Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/04/mix.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/04/sepa_0.png" alt="Separation Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/04/sepa_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/04/real_0.png" alt="Ground Truth Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/04/real_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item empty-cell"> </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/04/sepa_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/04/sepa_1.wav" type="audio/mpeg">
+                            Your browser do not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/04/real_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/04/real_1.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>  
+                </div>          
+            </div>      
+
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Audio Example 5</h3> 
+            <div class="content">
+                <div class="audio-results-header">
+                    <h4 class="audio-header-label">Mixture</h4>
+                    <h4 class="audio-header-label">Separation Results</h4>
+                    <h4 class="audio-header-label">Ground Truth</h4>
+                </div>
+    
+                <div class="audio-results-grid">
+                    <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/05/mix.png" alt="Mixture Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/05/mix.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/05/sepa_0.png" alt="Separation Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/05/sepa_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/05/real_0.png" alt="Ground Truth Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/05/real_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item empty-cell"> </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/05/sepa_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/05/sepa_1.wav" type="audio/mpeg">
+                            Your browser do not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/03_2sound/05/real_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/03_2sound/01/real_1.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>  
+                </div>          
+            </div>      
+
+        </section>
+
+
+        <section class="section" id="D3">
+            <h2 class="title is-3 section-title">Task 2: 3 Sound Event Separation</h2>
+
+            <h3 class="subtitle is-4">Audio Example 1</h3> 
+                <div class="content">
+                    <div class="audio-results-header">
+                        <h4 class="audio-header-label">Mixture</h4>
+                        <h4 class="audio-header-label">Separation Results</h4>
+                        <h4 class="audio-header-label">Ground Truth</h4>
+                    </div>
+        
+                    <div class="audio-results-grid">
+                        <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                <img src="audios/04_3sound/01/mix.png" alt="Mixture Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/04_3sound/01/mix.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/04_3sound/01/sepa_0.png" alt="Separation Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/04_3sound/01/sepa_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/04_3sound/01/real_0.png" alt="Ground Truth Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/04_3sound/01/real_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item empty-cell"> </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/04_3sound/01/sepa_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/04_3sound/01/sepa_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/04_3sound/01/real_1.png" alt="Separation Waveform 3">
+                            </div>
+                            <audio controls>
+                                <source src="audios/04_3sound/01/real_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>  
+
+                        <div class="audio-result-item empty-cell"> </div>
+                        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/04_3sound/01/sepa_2.png" alt="Separation Waveform 3">
+                            </div>
+                            <audio controls>
+                                <source src="audios/04_3sound/01/sepa_2.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/04_3sound/01/real_2.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/04_3sound/01/real_2.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>  
+
+
+                    </div>          
+                </div>        
+
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Audio Example 2</h3> 
+                <div class="content">
+                    <div class="audio-results-header">
+                        <h4 class="audio-header-label">Mixture</h4>
+                        <h4 class="audio-header-label">Separation Results</h4>
+                        <h4 class="audio-header-label">Ground Truth</h4>
+                    </div>
+        
+                    <div class="audio-results-grid">
+                        <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                <img src="audios/04_3sound/02/mix.png" alt="Mixture Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/04_3sound/02/mix.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/04_3sound/02/sepa_0.png" alt="Separation Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/04_3sound/02/sepa_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/04_3sound/02/real_0.png" alt="Ground Truth Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/04_3sound/02/real_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item empty-cell"> </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/04_3sound/02/sepa_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/04_3sound/02/sepa_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/04_3sound/02/real_1.png" alt="Separation Waveform 3">
+                            </div>
+                            <audio controls>
+                                <source src="audios/04_3sound/02/real_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>  
+
+                        <div class="audio-result-item empty-cell"> </div>
+                        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/04_3sound/02/sepa_2.png" alt="Separation Waveform 3">
+                            </div>
+                            <audio controls>
+                                <source src="audios/04_3sound/02/sepa_2.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/04_3sound/02/real_2.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/04_3sound/02/real_2.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>  
+
+
+                    </div>          
+                </div>      
+
+                <div class="audio-group-separator"></div> 
+                <h3 class="subtitle is-4">Audio Example 3</h3> 
+                    <div class="content">
+                        <div class="audio-results-header">
+                            <h4 class="audio-header-label">Mixture</h4>
+                            <h4 class="audio-header-label">Separation Results</h4>
+                            <h4 class="audio-header-label">Ground Truth</h4>
+                        </div>
+            
+                        <div class="audio-results-grid">
+                            <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                    <img src="audios/04_3sound/03/mix.png" alt="Mixture Waveform 1">
+                                </div>
+                                <audio controls>
+                                    <source src="audios/04_3sound/03/mix.wav" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+            
+                            <div class="audio-result-item">
+                                <div class="waveform-placeholder">
+                                    <img src="audios/04_3sound/03/sepa_0.png" alt="Separation Waveform 1">
+                                </div>
+                                <audio controls>
+                                    <source src="audios/04_3sound/03/sepa_0.wav" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+            
+                            <div class="audio-result-item">
+                                <div class="waveform-placeholder">
+                                    <img src="audios/04_3sound/03/real_0.png" alt="Ground Truth Waveform 1">
+                                </div>
+                                <audio controls>
+                                    <source src="audios/04_3sound/03/real_0.wav" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+            
+                            <div class="audio-result-item empty-cell"> </div>
+            
+                            <div class="audio-result-item">
+                                <div class="waveform-placeholder">
+                                    <img src="audios/04_3sound/03/sepa_1.png" alt="Separation Waveform 2">
+                                </div>
+                                <audio controls>
+                                    <source src="audios/04_3sound/03/sepa_1.wav" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+            
+                            <div class="audio-result-item">
+                                <div class="waveform-placeholder">
+                                    <img src="audios/04_3sound/03/real_1.png" alt="Separation Waveform 3">
+                                </div>
+                                <audio controls>
+                                    <source src="audios/04_3sound/03/real_1.wav" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>  
+    
+                            <div class="audio-result-item empty-cell"> </div>
+                            
+                            <div class="audio-result-item">
+                                <div class="waveform-placeholder">
+                                    <img src="audios/04_3sound/03/sepa_2.png" alt="Separation Waveform 3">
+                                </div>
+                                <audio controls>
+                                    <source src="audios/04_3sound/03/sepa_2.wav" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+            
+                            <div class="audio-result-item">
+                                <div class="waveform-placeholder">
+                                    <img src="audios/04_3sound/03/real_2.png" alt="Separation Waveform 2">
+                                </div>
+                                <audio controls>
+                                    <source src="audios/04_3sound/03/real_2.wav" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>  
+    
+    
+                        </div>          
+                    </div>      
+
+                    <div class="audio-group-separator"></div> 
+                    <h3 class="subtitle is-4">Audio Example 4</h3> 
+                        <div class="content">
+                            <div class="audio-results-header">
+                                <h4 class="audio-header-label">Mixture</h4>
+                                <h4 class="audio-header-label">Separation Results</h4>
+                                <h4 class="audio-header-label">Ground Truth</h4>
+                            </div>
+                
+                            <div class="audio-results-grid">
+                                <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                        <img src="audios/04_3sound/04/mix.png" alt="Mixture Waveform 1">
+                                    </div>
+                                    <audio controls>
+                                        <source src="audios/04_3sound/04/mix.wav" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                
+                                <div class="audio-result-item">
+                                    <div class="waveform-placeholder">
+                                        <img src="audios/04_3sound/04/sepa_0.png" alt="Separation Waveform 1">
+                                    </div>
+                                    <audio controls>
+                                        <source src="audios/04_3sound/04/sepa_0.wav" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                
+                                <div class="audio-result-item">
+                                    <div class="waveform-placeholder">
+                                        <img src="audios/04_3sound/04/real_0.png" alt="Ground Truth Waveform 1">
+                                    </div>
+                                    <audio controls>
+                                        <source src="audios/04_3sound/04/real_0.wav" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                
+                                <div class="audio-result-item empty-cell"> </div>
+                
+                                <div class="audio-result-item">
+                                    <div class="waveform-placeholder">
+                                        <img src="audios/04_3sound/04/sepa_1.png" alt="Separation Waveform 2">
+                                    </div>
+                                    <audio controls>
+                                        <source src="audios/04_3sound/04/sepa_1.wav" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                
+                                <div class="audio-result-item">
+                                    <div class="waveform-placeholder">
+                                        <img src="audios/04_3sound/04/real_1.png" alt="Separation Waveform 3">
+                                    </div>
+                                    <audio controls>
+                                        <source src="audios/04_3sound/04/real_1.wav" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>  
+        
+                                <div class="audio-result-item empty-cell"> </div>
+                                
+                                <div class="audio-result-item">
+                                    <div class="waveform-placeholder">
+                                        <img src="audios/04_3sound/04/sepa_2.png" alt="Separation Waveform 3">
+                                    </div>
+                                    <audio controls>
+                                        <source src="audios/04_3sound/04/sepa_2.wav" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                
+                                <div class="audio-result-item">
+                                    <div class="waveform-placeholder">
+                                        <img src="audios/04_3sound/04/real_2.png" alt="Separation Waveform 2">
+                                    </div>
+                                    <audio controls>
+                                        <source src="audios/04_3sound/04/real_2.wav" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>  
+        
+        
+                            </div>          
+                        </div>    
+
+
+                        <div class="audio-group-separator"></div> 
+                        <h3 class="subtitle is-4">Audio Example 5</h3> 
+                            <div class="content">
+                                <div class="audio-results-header">
+                                    <h4 class="audio-header-label">Mixture</h4>
+                                    <h4 class="audio-header-label">Separation Results</h4>
+                                    <h4 class="audio-header-label">Ground Truth</h4>
+                                </div>
+                    
+                                <div class="audio-results-grid">
+                                    <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                            <img src="audios/04_3sound/05/mix.png" alt="Mixture Waveform 1">
+                                        </div>
+                                        <audio controls>
+                                            <source src="audios/04_3sound/05/mix.wav" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                    
+                                    <div class="audio-result-item">
+                                        <div class="waveform-placeholder">
+                                            <img src="audios/04_3sound/05/sepa_0.png" alt="Separation Waveform 1">
+                                        </div>
+                                        <audio controls>
+                                            <source src="audios/04_3sound/05/sepa_0.wav" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                    
+                                    <div class="audio-result-item">
+                                        <div class="waveform-placeholder">
+                                            <img src="audios/04_3sound/05/real_0.png" alt="Ground Truth Waveform 1">
+                                        </div>
+                                        <audio controls>
+                                            <source src="audios/04_3sound/05/real_0.wav" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                    
+                                    <div class="audio-result-item empty-cell"> </div>
+                    
+                                    <div class="audio-result-item">
+                                        <div class="waveform-placeholder">
+                                            <img src="audios/04_3sound/05/sepa_1.png" alt="Separation Waveform 2">
+                                        </div>
+                                        <audio controls>
+                                            <source src="audios/04_3sound/05/sepa_1.wav" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                    
+                                    <div class="audio-result-item">
+                                        <div class="waveform-placeholder">
+                                            <img src="audios/04_3sound/05/real_1.png" alt="Separation Waveform 3">
+                                        </div>
+                                        <audio controls>
+                                            <source src="audios/04_3sound/05/real_1.wav" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>  
+            
+                                    <div class="audio-result-item empty-cell"> </div>
+                                    
+                                    <div class="audio-result-item">
+                                        <div class="waveform-placeholder">
+                                            <img src="audios/04_3sound/05/sepa_2.png" alt="Separation Waveform 3">
+                                        </div>
+                                        <audio controls>
+                                            <source src="audios/04_3sound/05/sepa_2.wav" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                    
+                                    <div class="audio-result-item">
+                                        <div class="waveform-placeholder">
+                                            <img src="audios/04_3sound/05/real_2.png" alt="Separation Waveform 2">
+                                        </div>
+                                        <audio controls>
+                                            <source src="audios/04_3sound/05/real_2.wav" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>  
+            
+            
+                                </div>          
+                            </div>    
+        </section>           
+
+
+        <section class="section" id="D4">
+            <h2 class="title is-3 section-title">Task 3: 2 Speech Separation</h2>
+            
+            <h3 class="subtitle is-4">Audio Example 1</h3> 
+                <div class="content">
+                    <div class="audio-results-header">
+                        <h4 class="audio-header-label">Mixture</h4>
+                        <h4 class="audio-header-label">Separation Results</h4>
+                        <h4 class="audio-header-label">Ground Truth</h4>
+                    </div>
+        
+                    <div class="audio-results-grid">
+                        <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                                <img src="audios/05_2speech/01/mix.png" alt="Mixture Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/05_2speech/01/mix.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/05_2speech/01/sepa_0.png" alt="Separation Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/05_2speech/01/sepa_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/05_2speech/01/real_0.png" alt="Ground Truth Waveform 1">
+                            </div>
+                            <audio controls>
+                                <source src="audios/05_2speech/01/real_0.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item empty-cell"> </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/05_2speech/01/sepa_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/05_2speech/01/sepa_1.wav" type="audio/mpeg">
+                                Your browser do not support the audio element.
+                            </audio>
+                        </div>
+        
+                        <div class="audio-result-item">
+                            <div class="waveform-placeholder">
+                                <img src="audios/05_2speech/01/real_1.png" alt="Separation Waveform 2">
+                            </div>
+                            <audio controls>
+                                <source src="audios/05_2speech/01/real_1.wav" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>  
+                    </div>          
+                </div>        
+                    
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Audio Example 2</h3> 
+            <div class="content">
+                <div class="audio-results-header">
+                    <h4 class="audio-header-label">Mixture</h4>
+                    <h4 class="audio-header-label">Separation Results</h4>
+                    <h4 class="audio-header-label">Ground Truth</h4>
+                </div>
+    
+                <div class="audio-results-grid">
+                    <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/02/mix.png" alt="Mixture Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/02/mix.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/02/sepa_0.png" alt="Separation Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/02/sepa_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/02/real_0.png" alt="Ground Truth Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/02/real_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item empty-cell"> </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/02/sepa_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/02/sepa_1.wav" type="audio/mpeg">
+                            Your browser do not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/02/real_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/02/real_1.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>  
+                </div>          
+            </div>      
+
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Audio Example 3</h3> 
+            <div class="content">
+                <div class="audio-results-header">
+                    <h4 class="audio-header-label">Mixture</h4>
+                    <h4 class="audio-header-label">Separation Results</h4>
+                    <h4 class="audio-header-label">Ground Truth</h4>
+                </div>
+    
+                <div class="audio-results-grid">
+                    <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/03/mix.png" alt="Mixture Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/03/mix.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/03/sepa_0.png" alt="Separation Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/03/sepa_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/03/real_0.png" alt="Ground Truth Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/03/real_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item empty-cell"> </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/03/sepa_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/03/sepa_1.wav" type="audio/mpeg">
+                            Your browser do not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/03/real_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/03/real_1.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>  
+                </div>          
+            </div>      
+
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Audio Example 4</h3> 
+            <div class="content">
+                <div class="audio-results-header">
+                    <h4 class="audio-header-label">Mixture</h4>
+                    <h4 class="audio-header-label">Separation Results</h4>
+                    <h4 class="audio-header-label">Ground Truth</h4>
+                </div>
+    
+                <div class="audio-results-grid">
+                    <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/04/mix.png" alt="Mixture Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/04/mix.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/04/sepa_0.png" alt="Separation Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/04/sepa_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/04/real_0.png" alt="Ground Truth Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/04/real_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item empty-cell"> </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/04/sepa_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/04/sepa_1.wav" type="audio/mpeg">
+                            Your browser do not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/04/real_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/04/real_1.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>  
+                </div>          
+            </div>      
+
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Audio Example 5</h3> 
+            <div class="content">
+                <div class="audio-results-header">
+                    <h4 class="audio-header-label">Mixture</h4>
+                    <h4 class="audio-header-label">Separation Results</h4>
+                    <h4 class="audio-header-label">Ground Truth</h4>
+                </div>
+    
+                <div class="audio-results-grid">
+                    <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/05/mix.png" alt="Mixture Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/05/mix.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/05/sepa_0.png" alt="Separation Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/05/sepa_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/05/real_0.png" alt="Ground Truth Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/05/real_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item empty-cell"> </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/05/sepa_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/05/sepa_1.wav" type="audio/mpeg">
+                            Your browser do not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/05/real_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/01/real_1.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>  
+                </div>          
+            </div>      
+
+
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Failure Case 1 (Speaker Ambiguity)</h3> 
+            <div class="content">
+                <div class="audio-results-header">
+                    <h4 class="audio-header-label">Mixture</h4>
+                    <h4 class="audio-header-label">Separation Results</h4>
+                    <h4 class="audio-header-label">Ground Truth</h4>
+                </div>
+    
+                <div class="audio-results-grid">
+                    <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/06/mix.png" alt="Mixture Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/06/mix.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/06/sepa_0.png" alt="Separation Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/06/sepa_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/06/real_0.png" alt="Ground Truth Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/06/real_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item empty-cell"> </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/06/sepa_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/06/sepa_1.wav" type="audio/mpeg">
+                            Your browser do not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/06/real_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/06/real_1.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>  
+                </div>          
+            </div>      
+
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Failure Case 2 (Speaker Ambiguity)</h3> 
+            <div class="content">
+                <div class="audio-results-header">
+                    <h4 class="audio-header-label">Mixture</h4>
+                    <h4 class="audio-header-label">Separation Results</h4>
+                    <h4 class="audio-header-label">Ground Truth</h4>
+                </div>
+    
+                <div class="audio-results-grid">
+                    <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/07/mix.png" alt="Mixture Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/07/mix.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/07/sepa_0.png" alt="Separation Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/07/sepa_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/07/real_0.png" alt="Ground Truth Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/07/real_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item empty-cell"> </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/07/sepa_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/07/sepa_1.wav" type="audio/mpeg">
+                            Your browser do not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/07/real_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/07/real_1.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>  
+                </div>          
+            </div>      
+
+
+            <div class="audio-group-separator"></div> 
+            <h3 class="subtitle is-4">Failure Case 3 (Speaker Ambiguity)</h3> 
+            <div class="content">
+                <div class="audio-results-header">
+                    <h4 class="audio-header-label">Mixture</h4>
+                    <h4 class="audio-header-label">Separation Results</h4>
+                    <h4 class="audio-header-label">Ground Truth</h4>
+                </div>
+    
+                <div class="audio-results-grid">
+                    <div class="audio-result-item first-mixture-cell"> <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/08/mix.png" alt="Mixture Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/08/mix.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/08/sepa_0.png" alt="Separation Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/08/sepa_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/08/real_0.png" alt="Ground Truth Waveform 1">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/08/real_0.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item empty-cell"> </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/08/sepa_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/08/sepa_1.wav" type="audio/mpeg">
+                            Your browser do not support the audio element.
+                        </audio>
+                    </div>
+    
+                    <div class="audio-result-item">
+                        <div class="waveform-placeholder">
+                            <img src="audios/05_2speech/08/real_1.png" alt="Separation Waveform 2">
+                        </div>
+                        <audio controls>
+                            <source src="audios/05_2speech/08/real_1.wav" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>  
+                </div>          
+            </div>      
+
+
+
+        </section>
+
+
+    </div>
+     
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const closeSidebar = document.getElementById('closeSidebar');
+         
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+        }
+         
+        sidebarToggle.addEventListener('click', toggleSidebar);
+        closeSidebar.addEventListener('click', toggleSidebar);
+         
+
+        /*
+        // 
+        document.addEventListener('click', function(event) {
+            const isClickInsideSidebar = sidebar.contains(event.target);
+            const isClickOnToggle = sidebarToggle.contains(event.target);
+             
+            if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+        */
+         
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('darkModeToggle').querySelector('i');
+             
+            icon.classList.add('animate');
+             
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+             
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+             
+            setTimeout(() => {
+                icon.classList.remove('animate');
+            }, 500);
+        }
+         
+        function setActiveMenuItem() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.sidebar-button');
+             
+            let currentSection = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    currentSection = section.id;
+                }
+            });
+             
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        }
+         
+
+
+        document.querySelectorAll('.sidebar-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                const offset = 80; 
+        
+                if (targetElement) {
+        
+                    const startPosition = window.pageYOffset;
+                    const targetPosition = targetElement.offsetTop - offset;
+                    const distance = targetPosition - startPosition;
+                    const duration = 300; 
+                    let startTime = null;
+        
+                    function animateScroll(currentTime) {
+                        if (startTime === null) startTime = currentTime;
+                        const timeElapsed = currentTime - startTime;
+                        const progress = Math.min(timeElapsed / duration, 1); // 0 to 1
+        
+                        const easeInOutQuad = t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+                        const easedProgress = easeInOutQuad(progress);
+        
+                        window.scrollTo(0, startPosition + distance * easedProgress);
+        
+                        if (timeElapsed < duration) {
+                            requestAnimationFrame(animateScroll);
+                        }
+                    }
+        
+                    requestAnimationFrame(animateScroll);
+        
+                    document.querySelectorAll('.sidebar-button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                const icon = document.getElementById('darkModeToggle').querySelector('i');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+             
+            document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+             
+            setActiveMenuItem();
+             
+            window.addEventListener('scroll', setActiveMenuItem);
+        });
+    </script>
+</body>
+</html>
