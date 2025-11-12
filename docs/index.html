@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📑</text></svg>">
     <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.4/css/academicons.min.css">
 
     <style>
     </style>
@@ -80,22 +81,77 @@
         <section id="top">
             <div class="hero-body">
                 <div class="container has-text-centered">
-                    <h1 class="title is-3">Unsupervised Single-Channel Audio Separation <br> with Diffusion Source Priors</h1>
-                    <h2 class="subtitle is-5">Anonymous Authors · Under Submission</h2>
+                    <h1 class="title is-3" style="margin-bottom:2.5rem;">
+                        Unsupervised Single-Channel Audio Separation <br> with Diffusion Source Priors</h1>
+                    <h2 class="subtitle is-5" style="line-height:1.6; margin-bottom:0.5rem;"">
+                        <a href="https://scholar.google.com/citations?user=aUKH6-wAAAAJ&hl=en"
+                        target="_blank"
+                        style="color:#1a0dab; text-decoration:underline;">
+                        Runwu Shi
+                        </a><sup>1</sup>, 
+                        <a href="https://scholar.google.com/citations?user=uDk9qSMAAAAJ&hl=en"
+                        target="_blank"
+                        style="color:#1a0dab; text-decoration:underline;">
+                        Chang Li
+                        </a><sup>2</sup>,
+                        <a href="https://scholar.google.com/citations?user=MhYgY-8AAAAJ&hl=en"
+                        target="_blank"
+                        style="color:#1a0dab; text-decoration:underline;">
+                        Jiang Wang
+                        </a><sup>1</sup>, 
+                        Rui Zhang<sup>3</sup>, 
+                        Nabeela Khan<sup>1</sup>,<br>
+                        Benjamin Yen<sup>1</sup>, 
+                        Takeshi Ashizawa<sup>1</sup>, 
+                        <a href="https://scholar.google.com/citations?user=SBBBYM8AAAAJ&hl=en&oi=ao"
+                        target="_blank"
+                        style="color:#1a0dab; text-decoration:underline;">
+                        Kazuhiro Nakadai
+                        </a><sup>1</sup>
+                      </h2>
+                    <p style="line-height:1.4; font-size: 1.05em;">
+                        <sup>1</sup>Department of Systems and Control Engineering, Institute of Science Tokyo<br>
+                        <sup>2</sup>University of Science and Technology of China, 
+                        <sup>3</sup>University of Hong Kong
+                    </p>
+
+                    <div class="buttons is-centered"
+                      style="margin-top:2rem; display:flex; justify-content:center; gap:1.5rem;">
+                   <a class="button is-rounded is-medium"
+                      style="background-color:#db4437; color:#ffffff; border:none; min-width:220px;"
+                      href="https://arxiv.org/abs/your_arxiv_id"
+                      target="_blank">
+                     <span class="icon"><i class="fas fa-file-alt"></i></span>
+                     <span>Arxiv Full Paper</span>
+                   </a>
+                 
+                   <a class="button is-rounded is-medium"
+                      style="background-color:#313131; color:#ffffff; border:none; min-width:220px;"
+                      href="https://github.com/RunwuShi/unasdiff"
+                      target="_blank">
+                     <span class="icon"><i class="fab fa-github"></i></span>
+                     <span>GitHub Repository</span>
+                   </a>
+                 </div>
+
+                <!-- <div class="content has-text-justified">
+                    This work presents an unsupervised diffusion-based framework for single-channel audio separation, which leverages source-trained diffusion priors and is evaluated on speech–sound event, sound event, and speech separation tasks.
+                </div> -->
                 </div>
             </div>
         </section>
-         
-        <section class="section" id="abstract">
+
+        <!-- <section class="section" id="abstract">
             <div class="content has-text-justified">
-                <strong>Abstract:</strong> Single-channel audio separation, which isolates individual sources such as speech and sound events from monophonic mixtures, remains a challenging task in audio processing. Supervised approaches, typically trained on synthetically generated mixtures, are the prevailing solution. However, these methods depend on high-quality paired training data, which is often scarce or difficult to acquire in real-world scenarios. This data scarcity can hinder model performance on unseen mixing conditions, compromising generalization capabilities.
-                To this end, in this work, we approach the problem from an unsupervised perspective, framing it as a probabilistic inverse problem. Our method requires only training diffusion priors on individual sources. Separation is then achieved by iteratively guiding an initial state towards the solution through reconstruction loss. Crucially, we introduce an advanced inverse solver specifically designed for separation, which mitigates gradient conflicts arising from the interference between the diffusion prior and the reconstruction guidance during the denoising process. This effectively ensures high-quality and balanced separation performance across individual sources. In addition, we found that using augmented mixture instead of pure Gaussian noise to initialize the denoising process is effective, and this informative prior significantly improves the final performance. Furthermore, to enhance audio prior modeling, we designed a novel Time-Frequency (TF) attention-based network architecture that demonstrates powerful audio modeling capabilities. These collective improvements significantly enhance separation performance, as demonstrated by our experimental results across speech-sound event, sound event, and speech separation tasks.
+                This work introduces an unsupervised diffusion-based framework for single-channel audio separation, evaluated across speech–sound event, sound event, and speech separation tasks.
             </div>
-        </section>
+        </section> -->
         
+        <!-- <h2 class="title is-4 has-text-centered" style="margin-bottom:1rem;">
+            Audio Samples
+        </h2> -->
         <div class="line-above"> </div>
 
-        
         <section class="section" id="D0">
             <h2 class="title is-3 section-title">Task 1: 1 Speech + 1 Sound Event Separation</h2>
             <h3 class="subtitle is-4">Audio Example 1</h3> 
