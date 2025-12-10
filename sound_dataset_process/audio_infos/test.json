@@ -1,0 +1,721 @@
+[
+  {
+    "wave_path": "./audio_samples/sound/Hi-hat/d593ed57.wav",
+    "wave_label": "Hi-hat",
+    "spans": [
+      [
+        0.0,
+        0.2
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 0.3
+  },
+  {
+    "wave_path": "./audio_samples/sound/Saxophone/1796f9cb.wav",
+    "wave_label": "Saxophone",
+    "spans": [
+      [
+        0.0,
+        0.3
+      ],
+      [
+        0.375,
+        2.875
+      ],
+      [
+        2.9,
+        3.5
+      ]
+    ],
+    "span_probs": [
+      0.08823529411764706,
+      0.7352941176470589,
+      0.17647058823529416
+    ],
+    "wave_length": 3.5
+  },
+  {
+    "wave_path": "./audio_samples/sound/Trumpet/05ad10fb.wav",
+    "wave_label": "Trumpet",
+    "spans": [
+      [
+        0.0,
+        6.9
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 7.2
+  },
+  {
+    "wave_path": "./audio_samples/sound/Cello/2174fe5c.wav",
+    "wave_label": "Cello",
+    "spans": [
+      [
+        0.0,
+        5.275
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 5.28
+  },
+  {
+    "wave_path": "./audio_samples/sound/Clarinet/f4deed2a.wav",
+    "wave_label": "Clarinet",
+    "spans": [
+      [
+        0.1,
+        0.225
+      ],
+      [
+        0.3,
+        0.375
+      ],
+      [
+        0.525,
+        6.65
+      ]
+    ],
+    "span_probs": [
+      0.019762845849802372,
+      0.011857707509881424,
+      0.9683794466403162
+    ],
+    "wave_length": 7.06
+  },
+  {
+    "wave_path": "./audio_samples/sound/Snare_drum/32a5773b.wav",
+    "wave_label": "Snare_drum",
+    "spans": [
+      [
+        0.0,
+        0.55
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 1.06
+  },
+  {
+    "wave_path": "./audio_samples/sound/Laughter/315e2cf1.wav",
+    "wave_label": "Laughter",
+    "spans": [
+      [
+        0.0,
+        0.8
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 0.82
+  },
+  {
+    "wave_path": "./audio_samples/sound/Fart/0da2acf4.wav",
+    "wave_label": "Fart",
+    "spans": [
+      [
+        0.0,
+        2.875
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 2.88
+  },
+  {
+    "wave_path": "./audio_samples/sound/Flute/c71d4dca.wav",
+    "wave_label": "Flute",
+    "spans": [
+      [
+        0.0,
+        8.0
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 8.0
+  },
+  {
+    "wave_path": "./audio_samples/sound/Bass_drum/443a5ad9.wav",
+    "wave_label": "Bass_drum",
+    "spans": [
+      [
+        0.0,
+        1.1
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 1.5
+  },
+  {
+    "wave_path": "./audio_samples/sound/Squeak/4e268ce9.wav",
+    "wave_label": "Squeak",
+    "spans": [
+      [
+        0.0,
+        1.225
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 1.24
+  },
+  {
+    "wave_path": "./audio_samples/sound/Double_bass/028db587.wav",
+    "wave_label": "Double_bass",
+    "spans": [
+      [
+        0.0,
+        1.35
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 1.7
+  },
+  {
+    "wave_path": "./audio_samples/sound/Shatter/010a0b3a.wav",
+    "wave_label": "Shatter",
+    "spans": [
+      [
+        0.0,
+        0.9
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 0.9
+  },
+  {
+    "wave_path": "./audio_samples/sound/Fireworks/0ed387f3.wav",
+    "wave_label": "Fireworks",
+    "spans": [
+      [
+        0.0,
+        1.4
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 1.4
+  },
+  {
+    "wave_path": "./audio_samples/sound/Applause/bc9ecaac.wav",
+    "wave_label": "Applause",
+    "spans": [
+      [
+        0.0,
+        5.6
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 5.6
+  },
+  {
+    "wave_path": "./audio_samples/sound/Acoustic_guitar/ebd41dba.wav",
+    "wave_label": "Acoustic_guitar",
+    "spans": [
+      [
+        0.0,
+        10.2
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 10.22
+  },
+  {
+    "wave_path": "./audio_samples/sound/Violin_or_fiddle/bc34f748.wav",
+    "wave_label": "Violin_or_fiddle",
+    "spans": [
+      [
+        0.0,
+        2.9
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 2.92
+  },
+  {
+    "wave_path": "./audio_samples/sound/Tearing/b416d2a7.wav",
+    "wave_label": "Tearing",
+    "spans": [
+      [
+        0.0,
+        1.825
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 1.84
+  },
+  {
+    "wave_path": "./audio_samples/sound/Oboe/f8a388b3.wav",
+    "wave_label": "Oboe",
+    "spans": [
+      [
+        0.0,
+        0.75
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 0.84
+  },
+  {
+    "wave_path": "./audio_samples/sound/Gong/cc1f92f9.wav",
+    "wave_label": "Gong",
+    "spans": [
+      [
+        0.0,
+        2.175
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 2.18
+  },
+  {
+    "wave_path": "./audio_samples/sound/Knock/39409d9a.wav",
+    "wave_label": "Knock",
+    "spans": [
+      [
+        0.0,
+        1.3
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 1.3
+  },
+  {
+    "wave_path": "./audio_samples/sound/Writing/23300ded.wav",
+    "wave_label": "Writing",
+    "spans": [
+      [
+        1.775,
+        8.875
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 9.32
+  },
+  {
+    "wave_path": "./audio_samples/sound/Cough/3192a42d.wav",
+    "wave_label": "Cough",
+    "spans": [
+      [
+        0.0,
+        0.55
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 0.56
+  },
+  {
+    "wave_path": "./audio_samples/sound/Bark/d300a533.wav",
+    "wave_label": "Bark",
+    "spans": [
+      [
+        0.0,
+        1.625
+      ],
+      [
+        1.7,
+        2.75
+      ],
+      [
+        2.75,
+        4.45
+      ],
+      [
+        4.45,
+        6.825
+      ],
+      [
+        7.025,
+        7.925
+      ],
+      [
+        7.9,
+        8.525
+      ],
+      [
+        8.625,
+        8.7
+      ],
+      [
+        8.675,
+        8.825
+      ],
+      [
+        8.8,
+        9.25
+      ],
+      [
+        9.325,
+        9.425
+      ],
+      [
+        9.675,
+        10.625
+      ],
+      [
+        10.625,
+        11.7
+      ],
+      [
+        11.85,
+        13.075
+      ],
+      [
+        13.15,
+        14.825
+      ],
+      [
+        14.85,
+        15.25
+      ],
+      [
+        15.225,
+        16.625
+      ],
+      [
+        16.6,
+        17.525
+      ],
+      [
+        17.55,
+        17.95
+      ],
+      [
+        17.975,
+        18.425
+      ],
+      [
+        18.4,
+        18.9
+      ]
+    ],
+    "span_probs": [
+      0.09002770083102499,
+      0.058171745152354605,
+      0.0941828254847646,
+      0.13157894736842113,
+      0.04986149584487534,
+      0.03462603878116345,
+      0.004155124653739575,
+      0.00831024930747915,
+      0.024930747922437647,
+      0.005540166204986231,
+      0.05263157894736841,
+      0.0595567867036011,
+      0.06786703601108035,
+      0.092797783933518,
+      0.02216066481994463,
+      0.07756232686980616,
+      0.051246537396121755,
+      0.022160664819944532,
+      0.024930747922437647,
+      0.027700831024930764
+    ],
+    "wave_length": 18.9
+  },
+  {
+    "wave_path": "./audio_samples/sound/Tambourine/3ad721ec.wav",
+    "wave_label": "Tambourine",
+    "spans": [
+      [
+        0.0,
+        0.475
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 1.44
+  },
+  {
+    "wave_path": "./audio_samples/sound/Burping_or_eructation/0422b811.wav",
+    "wave_label": "Burping_or_eructation",
+    "spans": [
+      [
+        0.0,
+        0.475
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 0.48
+  },
+  {
+    "wave_path": "./audio_samples/sound/Cowbell/dad459c3.wav",
+    "wave_label": "Cowbell",
+    "spans": [
+      [
+        0.0,
+        0.75
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 2.06
+  },
+  {
+    "wave_path": "./audio_samples/sound/Harmonica/d84358f2.wav",
+    "wave_label": "Harmonica",
+    "spans": [
+      [
+        0.0,
+        5.025
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 5.04
+  },
+  {
+    "wave_path": "./audio_samples/sound/Drawer_open_or_close/f62211dc.wav",
+    "wave_label": "Drawer_open_or_close",
+    "spans": [
+      [
+        0.0,
+        0.675
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 0.72
+  },
+  {
+    "wave_path": "./audio_samples/sound/Meow/375d2777.wav",
+    "wave_label": "Meow",
+    "spans": [
+      [
+        0.0,
+        2.05
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 2.06
+  },
+  {
+    "wave_path": "./audio_samples/sound/Electric_piano/224ab14d.wav",
+    "wave_label": "Electric_piano",
+    "spans": [
+      [
+        0.0,
+        5.725
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 5.76
+  },
+  {
+    "wave_path": "./audio_samples/sound/Gunshot_or_gunfire/b1b4ca7e.wav",
+    "wave_label": "Gunshot_or_gunfire",
+    "spans": [
+      [
+        0.0,
+        0.95
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 0.98
+  },
+  {
+    "wave_path": "./audio_samples/sound/Microwave_oven/9e4b301c.wav",
+    "wave_label": "Microwave_oven",
+    "spans": [
+      [
+        0.0,
+        5.4
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 5.4
+  },
+  {
+    "wave_path": "./audio_samples/sound/Keys_jangling/6dcb6c44.wav",
+    "wave_label": "Keys_jangling",
+    "spans": [
+      [
+        0.0,
+        0.7
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 0.72
+  },
+  {
+    "wave_path": "./audio_samples/sound/Telephone/30eb5385.wav",
+    "wave_label": "Telephone",
+    "spans": [
+      [
+        0.0,
+        0.15
+      ],
+      [
+        0.15,
+        0.375
+      ],
+      [
+        0.375,
+        0.55
+      ],
+      [
+        0.575,
+        0.775
+      ]
+    ],
+    "span_probs": [
+      0.19999999999999996,
+      0.3,
+      0.23333333333333336,
+      0.2666666666666667
+    ],
+    "wave_length": 0.92
+  },
+  {
+    "wave_path": "./audio_samples/sound/Computer_keyboard/c7398e6a.wav",
+    "wave_label": "Computer_keyboard",
+    "spans": [
+      [
+        0.975,
+        3.825
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 4.78
+  },
+  {
+    "wave_path": "./audio_samples/sound/Finger_snapping/41b78889.wav",
+    "wave_label": "Finger_snapping",
+    "spans": [
+      [
+        0.05,
+        0.275
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 2.26
+  },
+  {
+    "wave_path": "./audio_samples/sound/Chime/87490e51.wav",
+    "wave_label": "Chime",
+    "spans": [
+      [
+        0.0,
+        3.375
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 4.14
+  },
+  {
+    "wave_path": "./audio_samples/sound/Bus/d6055d26.wav",
+    "wave_label": "Bus",
+    "spans": [
+      [
+        0.0,
+        17.0
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 17.0
+  },
+  {
+    "wave_path": "./audio_samples/sound/Scissors/02960f07.wav",
+    "wave_label": "Scissors",
+    "spans": [
+      [
+        0.15,
+        0.95
+      ],
+      [
+        1.3,
+        1.9
+      ],
+      [
+        2.225,
+        2.6
+      ],
+      [
+        3.075,
+        3.7
+      ]
+    ],
+    "span_probs": [
+      0.3333333333333333,
+      0.24999999999999994,
+      0.15625,
+      0.2604166666666667
+    ],
+    "wave_length": 3.7
+  },
+  {
+    "wave_path": "./audio_samples/sound/Glockenspiel/4e0759b2.wav",
+    "wave_label": "Glockenspiel",
+    "spans": [
+      [
+        0.0,
+        18.0
+      ]
+    ],
+    "span_probs": [
+      1.0
+    ],
+    "wave_length": 18.0
+  }
+]

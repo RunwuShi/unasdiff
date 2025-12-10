@@ -1,0 +1,12 @@
+used_audio/
+test_results/
+
+nohup.out
+*.pyc
+*.log
+*.out
+*.ckpt
+*.txt
+.nfs*
+*.pth
+

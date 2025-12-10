@@ -1,0 +1,33 @@
+model_name     = "Atten_unet"
+results_dir  = ""
+t_mode         = "None"
+experi_name    = ""
+load_model     = false
+start_step     = 0
+# modify model checkpoint path
+ckpt_path      = "./checkpoints/sound/sound_source.pt"
+
+[model_cfg.model_params]
+hidden_size    = 72
+emb_dim        = 128
+num_heads      = 4
+num_class      = 50
+
+[model_cfg.stft_params]
+n_fft      = 510
+hop_length = 255
+win_length = 510
+
+[train_para]
+use_amp        = true
+learning_rate  = 1e-4
+batch_size     = 12
+num_workers    = 4
+loss_type      = "MSE"
+start_epoch    = 0
+end_epoch      = 1001
+log_every      = 25
+ckpt_every     = 5000
+diffusion_step = 200
+beta_start     = 0.0001
+beta_end       = 0.02
