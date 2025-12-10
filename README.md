@@ -1,8 +1,7 @@
 # Unsupervised Single-Channel Audio Separation with Diffusion Source Priors
-
+[![arXiv](https://img.shields.io/badge/arXiv-2512.07226-b31b1b.svg)](https://arxiv.org/abs/2512.07226)
 The implementation of paper "Unsupervised Single-Channel Audio Separation with Diffusion Source Priors" (AAAI 2026).
 
-[![arXiv](https://img.shields.io/badge/arXiv-2512.07226-b31b1b.svg)](https://arxiv.org/abs/2512.07226)
 
 ## Introduction
 This work presents an unsupervised audio separation framework driven by diffusion source priors, capable of handling speech–sound, sound–sound, and speech–speech separation. We train two diffusion models as source priors for speech and general sound events using the VCTK and FSDKaggle2018 datasets, covering 41 sound classes. Focusing on gradient-based inverse-problem solvers, we further enhance separation performance through a hybrid gradient update schedule and a mixture-informed initialization strategy.
