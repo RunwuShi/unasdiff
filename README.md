@@ -41,5 +41,5 @@ The source-model-based separation approach is not well suited for same-class sou
 
 - **Undiff**: [arXiv:2306.00721](https://arxiv.org/abs/2306.00721)
 - **DPS**: [arXiv:2209.14687](https://arxiv.org/abs/2209.14687), [GitHub](https://github.com/DPS2022/diffusion-posterior-sampling)
-- **DSG** [arXiv:2209.14687](https://arxiv.org/abs/2402.03201v1), [GitHub](https://github.com/LingxiaoYang2023/DSG2024)
+- **DSG** [arXiv:2402.03201](https://arxiv.org/abs/2402.03201v1), [GitHub](https://github.com/LingxiaoYang2023/DSG2024)
 - **MSDM**: [arXiv:2302.02257](https://arxiv.org/abs/2302.02257), [GitHub](https://github.com/gladia-research-group/multi-source-diffusion-models)
