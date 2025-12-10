@@ -6,7 +6,6 @@ nohup.out
 *.log
 *.out
 *.ckpt
-*.txt
 .nfs*
 *.pth
 

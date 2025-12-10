@@ -1037,7 +1037,7 @@ class Atten_unet(nn.Module):
             
         
 if __name__ == '__main__':
-    config_path = os.path.join('/misc/export3/shirunwu/work/diff_infer_git/config/atten_unet_fsd/config.toml')  
+    config_path = os.path.join('./config/atten_unet_fsd/config.toml')  
 
     with open(config_path, 'r', encoding='utf-8') as f:
         ext = os.path.splitext(config_path)[1].lower()
