@@ -1056,7 +1056,7 @@ class CorrectorVPConditional():
             x_t = torch.cat(updated_x_sources, dim=-1)
         
         # DSG
-        elif schedule == 'cqt':
+        elif schedule == 'DSG':
             len_src = x_t.size(-1) // self.n_src
             grad_chunks = torch.split(grad, len_src, dim=-1)
             x_t_chunks = torch.split(x_t, len_src, dim=-1) # x_t srsc
